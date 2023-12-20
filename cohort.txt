@@ -1,0 +1,24 @@
+Js Basic - Advanced (Done)
+Linux Fundamental
+Gscoc Contribution - Ad-Hoc Class
+
+next js
+
+databases(no-sql/sql) : mongoDB, postgressDB
+Express(Basic)- http servers
+Node js
+
+
+
+
+
+
+compTIA linux certification (know more about it)
+
+Data Structure and Algorithm(C++)
+
+
+
+golang - google meet clone
+
+
