@@ -1,0 +1,7 @@
+7YEKjuLWzCivoTcy
+
+
+mongodb+srv://admin:7YEKjuLWzCivoTcy@cluster0.efatvaz.mongodb.net/
+
+
+postgresql://psdograofficial:PAdb04BQpVZh@ep-wandering-darkness-57997000.us-east-2.aws.neon.tech/test?sslmode=require
