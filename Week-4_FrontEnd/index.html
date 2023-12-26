@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+            let globalId = 1;
+            let todoState = [];
+            let oldTodoState = [];
+
+            // todo is the id of the container in which we have to append all the todos
+
+            function markAsDone(todoId) {
+                const parent = document.getElementById(todoId);
+                parent.children[2].innerHTML = "Done!";
+            }
+
+            function addTodo(todo) {
+                // big function we wrote in the beginning
+                const title = todo.title;
+                const description = todo.description;
+                const id = todo.id;
+
+                // const { title, description, id } = todo;
+
+                const child = document.createElement("div");
+
+                const firstGrandChild = document.createElement("div");
+                firstGrandChild.innerHTML = title;
+
+                const secondGrandChild = document.createElement("div");
+                secondGrandChild.innerHTML = description;
+
+                const thirdGrandChild = document.createElement("button");
+                thirdGrandChild.innerHTML = "Mark as done";
+
+                thirdGrandChild.setAttribute("onclick", `markAsDone(${id})`);
+
+                child.appendChild(firstGrandChild);
+                child.appendChild(secondGrandChild);
+                child.appendChild(thirdGrandChild);
+
+                child.setAttribute("id", id);
+
+                document.getElementById("todos").appendChild(child);
+            }
+
+            function removeTodo(todo) {
+                const element = document.getElementById(todo.id);
+                element.parentNode.removeChild(element);
+            }
+
+            function updateTodo(oldTodo, newTodo) {
+                const element = document.getElementById(oldTodo.id);
+                element.children[0].innerHTML = newTodo.title;
+                element.children[1].innerHTML = newTodo.description;
+                element.children[2].innerHTML = newTodo.completed
+                    ? "Mark as done"
+                    : "Done";
+            }
+
+            function updateState(newTodos) {
+                // calculate the diff b/w newTodos and oldTodos.
+                // More specifically, find out what todos are -
+                // 1. added
+                // 2. deleted
+                // 3. updated
+                const added = [];
+                const deleted = [];
+                const updated = [];
+
+                for (const newTodo of newTodos) {
+                    // find the newTodo in the oldTodoState if Found Then ingore
+                    // if not found then add it to the added array as the as a exact object
+                    const oldTodo = oldTodoState.find(
+                        (todo) => todo.id === newTodo.id
+                    );
+                    // if not found then add it to the added array as a object
+                    if (!oldTodo) {
+                        added.push(newTodo);
+                    } else if (
+                        !(JSON.stringify(newTodo) === JSON.stringify(oldTodo))
+                    ) {
+                        updated.push({ oldTodo, newTodo });
+                    }
+                }
+
+                // now write a logic for the delete state in the array
+                for (const oldTodo of oldTodoState) {
+                    const checkPresence = newTodos.find(
+                        (todo) => oldTodo.id === todo.id
+                    );
+                    if (!checkPresence) {
+                        deleted.push(oldTodo);
+                    }
+                }
+
+                // calculate these 3 arrays
+                // loop these array and call the function
+
+                // console.log(added);
+                // loop these array and call the function
+                for (const todo of added) {
+                    addTodo(todo); // Pass the todo object directly
+                }
+
+                for (let todo of deleted) {
+                    removeTodo(todo);
+                }
+                // const { oldTodo, newTodo }  this is called destructuring on fly
+                for (const { oldTodo, newTodo } of updated) {
+                    updateTodo(oldTodo, newTodo);
+                }
+
+                // call addTodo, removeTodo, updateTodo functions on each of the
+                // elements
+                oldTodoState = newTodos;
+            }
+            function addTodos() {
+                const title = document.getElementById("title").value;
+                const description =
+                    document.getElementById("description").value;
+                const newTodo = {
+                    title: title,
+                    description: description,
+                    id: globalId++,
+                };
+
+                todoState.push(newTodo);
+                // console.log(todoState); // Log the updated state after pushing
+
+                updateState(todoState);
+            }
+        </script>
+    </head>
+
+    <body>
+        <input type="text" id="title" placeholder="Todo title" /> <br /><br />
+
+        <input type="text" id="description" placeholder="Todo description" />
+        <br /><br />
+
+        <button onclick="addTodos()">Add todo</button> <br /><br />
+
+        <div id="todos"></div>
+    </body>
+</html>
